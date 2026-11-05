@@ -1,0 +1,10 @@
+CREATE TABLE forensic_tss_recalc (
+    recalc_id BIGSERIAL PRIMARY KEY,
+    employee_id VARCHAR(50) NOT NULL,
+    base_salary NUMERIC(15,2) NOT NULL,
+    reported_sfs_employee NUMERIC(15,2) NOT NULL,
+    recalculated_sfs_employee NUMERIC(15,2) NOT NULL,
+    reported_afp_employee NUMERIC(15,2) NOT NULL,
+    recalculated_afp_employee NUMERIC(15,2) NOT NULL,
+    is_overcapped BOOLEAN NOT NULL
+);
