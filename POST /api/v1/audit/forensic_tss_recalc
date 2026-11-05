@@ -1,10 +1,16 @@
-CREATE TABLE forensic_tss_recalc (
-    recalc_id BIGSERIAL PRIMARY KEY,
-    employee_id VARCHAR(50) NOT NULL,
-    base_salary NUMERIC(15,2) NOT NULL,
-    reported_sfs_employee NUMERIC(15,2) NOT NULL,
-    recalculated_sfs_employee NUMERIC(15,2) NOT NULL,
-    reported_afp_employee NUMERIC(15,2) NOT NULL,
-    recalculated_afp_employee NUMERIC(15,2) NOT NULL,
-    is_overcapped BOOLEAN NOT NULL
-);
+def recalculate_tss(base_salary: float, public_min_wage: float = 10000.00) -> dict:
+    # Ley 87-01: Topes de salarios mínimos legales
+    TOPE_SFS = public_min_wage * 10
+    TOPE_AFP = public_min_wage * 20
+    
+    base_sfs = min(base_salary, TOPE_SFS)
+    base_afp = min(base_salary, TOPE_AFP)
+    
+    calc_sfs = round(base_sfs * 0.0304, 2)
+    calc_afp = round(base_afp * 0.0287, 2)
+    
+    return {
+        "sfs_employee": calc_sfs,
+        "afp_employee": calc_afp,
+        "overcapped": base_salary > TOPE_SFS or base_salary > TOPE_AFP
+    }
